@@ -1,0 +1,11 @@
+Create Function createSancion() returns void
+as
+$$
+INSERT INTO  sancion
+(Select Distinct(dt.item),(select date_part('day' ,current_date-dt.fecha_devolucion) as dias)::Integer, 'aaa',al.nro_alquiler, al.codigo_cliente
+from detalle_alquiler as dt, alquiler as al 
+where al.nro_alquiler = dt.nro_alquiler  and dt.item in (select dt.item
+from detalle_alquiler as dtt where dtt.fecha_devolucion < current_date )
+);
+$$
+Language pglsql
